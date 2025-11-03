@@ -10,7 +10,8 @@
       "Bash(pnpm add:*)",
       "Bash(ffmpeg:*)",
       "Bash(pnpm build:*)",
-      "Bash(pnpm lint:*)"
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm:*)"
     ],
     "deny": [],
     "ask": []
