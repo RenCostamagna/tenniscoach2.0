@@ -6,8 +6,11 @@ const nextConfig = {
       bodySizeLimit: "20mb",
     },
   },
-  webpack: (config) => {
-    config.resolve.alias.canvas = false;
+  webpack: (config, { isServer }) => {
+    // Only disable canvas on client-side
+    if (!isServer) {
+      config.resolve.alias.canvas = false;
+    }
     return config;
   },
 };

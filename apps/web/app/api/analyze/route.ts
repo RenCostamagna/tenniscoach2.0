@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { VideoAnalysisSchema } from "@/types/pose";
-import { generateMockVideoAnalysis } from "@/lib/pose/mockAnalysis";
+import { analyzeVideoWithPoseDetection } from "@/lib/pose/realAnalysis";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 60; // Allow up to 60 seconds for video processing
 
 /**
  * POST /api/analyze
  * Analyzes a video file and returns pose landmarks and biomechanical data
- *
- * TODO: Implement actual video processing with MediaPipe/MoveNet
- * Current implementation returns mock data for testing
+ * Uses MoveNet for real-time pose detection
  */
 export async function POST(request: NextRequest) {
   try {
@@ -33,20 +32,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "File too large. Maximum size is 20MB." }, { status: 400 });
     }
 
-    // TODO: Implement actual video processing
-    // 1. Save video temporarily
-    // 2. Extract frames with ffmpeg (every 100ms)
-    // 3. Run MediaPipe Pose or MoveNet on each frame
-    // 4. Calculate biomechanical angles
-    // 5. Return analysis data
+    // Convert file to buffer
+    const arrayBuffer = await videoFile.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
-    // For now, return mock data
-
-    // Simulate processing delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    // Generate mock analysis
-    const analysis = generateMockVideoAnalysis(3);
+    // Analyze video with real pose detection
+    const analysis = await analyzeVideoWithPoseDetection(buffer, 10);
 
     // Validate response schema
     const validatedAnalysis = VideoAnalysisSchema.parse(analysis);
@@ -54,7 +45,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       data: validatedAnalysis,
-      message: "Video analyzed successfully (mock data)",
+      message: "Video analyzed successfully with MoveNet pose detection",
     });
   } catch (error) {
     console.error("Error analyzing video:", error);

@@ -6,7 +6,11 @@
       "Bash(git config:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(pnpm add:*)",
+      "Bash(ffmpeg:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm lint:*)"
     ],
     "deny": [],
     "ask": []

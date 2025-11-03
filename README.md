@@ -54,6 +54,10 @@ tenniscoach2.0/
 
 - Node.js >= 18
 - pnpm >= 8
+- FFmpeg (requerido para análisis de video)
+  - **Windows**: Descargar de [ffmpeg.org](https://ffmpeg.org/download.html) y agregar al PATH
+  - **macOS**: `brew install ffmpeg`
+  - **Linux**: `sudo apt-get install ffmpeg`
 
 ### Instalación
 
@@ -221,30 +225,23 @@ Procesa mensajes del chat con el Coach IA.
 
 ## 🔮 Implementación Futura
 
-### Detección de Pose Real
+### ✅ Detección de Pose Real (IMPLEMENTADO)
 
-Actualmente la aplicación usa datos mock. Para implementar detección real:
+La aplicación ahora incluye detección de pose real usando **MoveNet** de TensorFlow.js:
 
-1. **Backend separado (FastAPI)**:
+- ✅ Procesamiento de video con FFmpeg
+- ✅ Extracción de frames automática
+- ✅ Detección de pose con MoveNet Lightning (modelo rápido)
+- ✅ Cálculo de ángulos biomecánicos en tiempo real
+- ✅ Análisis completo de video en el endpoint `/api/analyze`
 
-```python
-# apps/backend/main.py
-import mediapipe as mp
-import cv2
+**Archivos implementados:**
 
-@app.post("/process-video")
-async def process_video(video: UploadFile):
-    # Extract frames with OpenCV
-    # Run MediaPipe Pose on each frame
-    # Return pose landmarks
-```
+- [lib/pose/videoProcessor.ts](apps/web/lib/pose/videoProcessor.ts) - Extracción de frames
+- [lib/pose/poseDetector.ts](apps/web/lib/pose/poseDetector.ts) - Detección con MoveNet
+- [lib/pose/realAnalysis.ts](apps/web/lib/pose/realAnalysis.ts) - Análisis completo
 
-2. **Integración con MediaPipe en Node.js**:
-
-```typescript
-// Usar @mediapipe/pose o @tensorflow/tfjs con MoveNet
-import { Pose } from "@mediapipe/pose";
-```
+**Nota:** Requiere FFmpeg instalado en el sistema (ver Prerequisitos)
 
 ### Almacenamiento en la Nube
 
